@@ -17,6 +17,7 @@ public class DateTimePickerDialog extends AlertDialog implements DialogInterface
     private DateTimePicker mDateTimePicker;
     private Calendar mDate = Calendar.getInstance();
     private OnDateTimeSetListener mOnDateTimeSetListener;
+
     @SuppressWarnings("deprecation")
     public DateTimePickerDialog(Context context, long date) {
         super(context,android.R.style.Theme_Holo_Light_Dialog_NoActionBar);
@@ -70,6 +71,7 @@ public class DateTimePickerDialog extends AlertDialog implements DialogInterface
         mOnDateTimeSetListener = callBack;
     }
 
+    @Override
     public void onClick(DialogInterface arg0, int arg1) {
         if (mOnDateTimeSetListener != null) {
             mOnDateTimeSetListener.OnDateTimeSet(this, mDate.getTimeInMillis());
