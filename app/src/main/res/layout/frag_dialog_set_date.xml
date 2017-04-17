@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.illidan.dhunt.view.YearDatePicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </com.illidan.dhunt.view.YearDatePicker>
+    <View
+        android:background="#666"
+        android:layout_width="match_parent"
+        android:layout_height="1px"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <Button
+            android:id="@+id/btn_twobtnmsg_dialog_left"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null"
+            android:gravity="center"
+            android:text="cancel"
+            android:textColor="#007aff"
+            android:textSize="16dp"/>
+
+        <View
+            android:background="#666"
+            android:layout_width="1px"
+            android:layout_height="match_parent"/>
+
+        <Button
+            android:id="@+id/btn_twobtnmsg_dialog_right"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null"
+            android:gravity="center"
+            android:text="ok"
+            android:textColor="#007aff"
+            android:textSize="17dp"/>
+    </LinearLayout>
+
+</LinearLayout>

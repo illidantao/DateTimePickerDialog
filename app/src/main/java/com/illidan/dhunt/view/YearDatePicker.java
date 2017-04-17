@@ -1,9 +1,10 @@
 package com.illidan.dhunt.view;
 
 import android.content.Context;
-import android.text.format.DateFormat;
-import android.util.Log;
-import android.widget.DatePicker;
+import android.support.annotation.AttrRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.util.AttributeSet;
 import android.widget.FrameLayout;
 import android.widget.NumberPicker;
 
@@ -24,23 +25,17 @@ public class YearDatePicker extends FrameLayout {
     private int year, month, dayOfMonth;
     private OnDateSetListener mOnYearDateChangedListener;
 
-    public YearDatePicker(Context context, long time) {
-        super(context);
-        /*
-         *獲取系統時間
-         */
+
+    public YearDatePicker(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+
         mCurrentDate = Calendar.getInstance();
-        mCurrentDate.setTimeInMillis(time);
+        mCurrentDate.setTimeInMillis(System.currentTimeMillis());
         year = mCurrentDate.get(Calendar.YEAR);
         month = mCurrentDate.get(Calendar.MONTH);
         dayOfMonth = mCurrentDate.get(Calendar.DAY_OF_MONTH);
-        /**
-         * 加载布局
-         */
         inflate(context, R.layout.ll_date_pick, this);
-        /**
-         * 初始化控件
-         */
+
         mYearSpinner = (NumberPicker) this.findViewById(R.id.np_year);
         mYearSpinner.setMinValue(1900);
         mYearSpinner.setMaxValue(3000);
@@ -58,24 +53,30 @@ public class YearDatePicker extends FrameLayout {
         mDaySpinner.setMinValue(1);
         mDaySpinner.setValue(dayOfMonth);
         mDaySpinner.setOnValueChangedListener(mOnDayChangedListener);
+    }
+
+    public YearDatePicker(Context context,AttributeSet attrs){
+        this(context, attrs, 0);
+    }
+
+    public YearDatePicker(Context context) {
+        this(context,null);
+    }
+
+    public void setDateTime(long time){
+        mCurrentDate.setTimeInMillis(time);
+        year = mCurrentDate.get(Calendar.YEAR);
+        month = mCurrentDate.get(Calendar.MONTH);
+        dayOfMonth = mCurrentDate.get(Calendar.DAY_OF_MONTH);
         updateDateControl();
     }
-    /**
-     *
-     * 控件监听器
-     */
+
     private NumberPicker.OnValueChangeListener mOnYearChangedListener = new NumberPicker.OnValueChangeListener() {
         @Override
         public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
             year = newVal;
             mCurrentDate.set(Calendar.YEAR, year);
-            /**
-             * 更新日期
-             */
             updateDateControl();
-            /**
-             * 给接口传值
-             */
             onDateTimeChanged();
         }
     };
@@ -107,7 +108,6 @@ public class YearDatePicker extends FrameLayout {
         }
         mDaySpinner.setMaxValue(maxDay);
     }
-
 
     /**
      * The listener used to indicate the user has finished selecting a date.

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.illidan.dhunt.R;
 import com.illidan.dhunt.view.YearDatePicker;
 
 /**
@@ -17,10 +18,16 @@ import com.illidan.dhunt.view.YearDatePicker;
  */
 public class YearMonthDialog extends DialogFragment {
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(DialogFragment.STYLE_NO_TITLE,android.R.style.Theme_Holo_Light_Dialog_NoActionBar);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = new YearDatePicker(inflater.getContext(),System.currentTimeMillis());
+        View view = inflater.inflate(R.layout.frag_dialog_set_date,null);
         return view;
     }
 
