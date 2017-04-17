@@ -2,6 +2,7 @@ package com.illidan.dhunt.view;
 
 import android.content.Context;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.FrameLayout;
 import android.widget.NumberPicker;
@@ -19,9 +20,8 @@ public class YearDatePicker extends FrameLayout {
     private final NumberPicker mYearSpinner;
     private final NumberPicker mMonthSpinner;
     private final NumberPicker mDaySpinner;
-    private Calendar mCurrentDate;;
+    private Calendar mCurrentDate;
     private int year, month, dayOfMonth;
-    private String[] mDateDisplayValues = new String[7];
     private OnDateSetListener mOnYearDateChangedListener;
 
     public YearDatePicker(Context context, long time) {
@@ -48,14 +48,14 @@ public class YearDatePicker extends FrameLayout {
         mYearSpinner.setOnValueChangedListener(mOnYearChangedListener);
 
         mMonthSpinner = (NumberPicker) this.findViewById(R.id.np_month);
-        mMonthSpinner.setMaxValue(11);
-        mMonthSpinner.setMinValue(0);
-        mMonthSpinner.setValue(month);
+        mMonthSpinner.setMaxValue(12);
+        mMonthSpinner.setMinValue(1);
+        mMonthSpinner.setValue(month+1);
         mMonthSpinner.setOnValueChangedListener(mOnMonthChangedListener);
 
         mDaySpinner = (NumberPicker) this.findViewById(R.id.np_day);
-        mDaySpinner.setMaxValue(30);
-        mDaySpinner.setMinValue(0);
+        mDaySpinner.setMaxValue(mCurrentDate.getActualMaximum(Calendar.DAY_OF_MONTH));
+        mDaySpinner.setMinValue(1);
         mDaySpinner.setValue(dayOfMonth);
         mDaySpinner.setOnValueChangedListener(mOnDayChangedListener);
         updateDateControl();
@@ -67,8 +67,8 @@ public class YearDatePicker extends FrameLayout {
     private NumberPicker.OnValueChangeListener mOnYearChangedListener = new NumberPicker.OnValueChangeListener() {
         @Override
         public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-            year = mYearSpinner.getValue();
-            mCurrentDate.set(Calendar.DAY_OF_MONTH, year);
+            year = newVal;
+            mCurrentDate.set(Calendar.YEAR, year);
             /**
              * 更新日期
              */
@@ -83,8 +83,7 @@ public class YearDatePicker extends FrameLayout {
     private NumberPicker.OnValueChangeListener mOnMonthChangedListener = new NumberPicker.OnValueChangeListener() {
         @Override
         public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-            month = mMonthSpinner.getValue();
-            mCurrentDate.set(Calendar.MONTH,month);
+            month = newVal-1;
             updateDateControl();
             onDateTimeChanged();
         }
@@ -93,14 +92,20 @@ public class YearDatePicker extends FrameLayout {
     private NumberPicker.OnValueChangeListener mOnDayChangedListener = new NumberPicker.OnValueChangeListener() {
         @Override
         public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-            dayOfMonth = mDaySpinner.getValue();
-            mCurrentDate.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+            dayOfMonth = newVal;
             onDateTimeChanged();
         }
     };
 
     private void updateDateControl() {
-        mDaySpinner.setMaxValue(mCurrentDate.getActualMaximum(Calendar.DAY_OF_MONTH));
+        Calendar cal = Calendar.getInstance();
+        cal.clear();
+        cal.set(year,month,10);
+        int maxDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+        if(dayOfMonth > maxDay){
+            dayOfMonth = maxDay;
+        }
+        mDaySpinner.setMaxValue(maxDay);
     }
 
 
