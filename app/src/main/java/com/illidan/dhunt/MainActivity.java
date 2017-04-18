@@ -4,15 +4,14 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.illidan.dhunt.fragment.DateTimePickerDialog;
 import com.illidan.dhunt.fragment.YearMonthDialog;
-import com.illidan.dhunt.view.DateTimePicker;
-
-import java.text.DateFormat;
+import com.illidan.dhunt.listener.OnDateListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -37,8 +36,12 @@ public class MainActivity extends FragmentActivity {
         @Override
         public void onClick(View v) {
             if(v == btnYearMouth){
-                YearMonthDialog dialog = new YearMonthDialog();
-                dialog.show(getSupportFragmentManager(),"year_month");
+                YearMonthDialog.show(MainActivity.this, new OnDateListener() {
+                    @Override
+                    public void onDateSet(String mmyy, String yymm) {
+                        tvDate.setText(mmyy+"\n"+yymm);
+                    }
+                });
             }else if (v == btnDateTime){
                 DateTimePickerDialog dateTimePickerDialog = new DateTimePickerDialog(MainActivity.this,System.currentTimeMillis());
                 dateTimePickerDialog.setOnDateTimeSetListener(onDateTimeSetListener);

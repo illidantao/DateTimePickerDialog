@@ -4,8 +4,8 @@
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
     android:orientation="horizontal"
-    android:paddingLeft="12dp"
-    android:paddingRight="12dp">
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp">
 
     <NumberPicker
         android:id="@+id/np_year"

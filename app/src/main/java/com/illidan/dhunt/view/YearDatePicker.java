@@ -1,10 +1,8 @@
 package com.illidan.dhunt.view;
 
 import android.content.Context;
-import android.support.annotation.AttrRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.NumberPicker;
 
@@ -18,9 +16,8 @@ import java.util.Calendar;
  */
 public class YearDatePicker extends FrameLayout {
 
-    private final NumberPicker mYearSpinner;
-    private final NumberPicker mMonthSpinner;
-    private final NumberPicker mDaySpinner;
+    private final NumberPicker mYearSpinner,mMonthSpinner,mDaySpinner;
+    private EditText edtYear, edtMonth, edtDayOfMonth;
     private Calendar mCurrentDate;
     private int year, month, dayOfMonth;
     private OnDateSetListener mOnYearDateChangedListener;
@@ -39,20 +36,23 @@ public class YearDatePicker extends FrameLayout {
         mYearSpinner = (NumberPicker) this.findViewById(R.id.np_year);
         mYearSpinner.setMinValue(1900);
         mYearSpinner.setMaxValue(3000);
-        mYearSpinner.setValue(year);
         mYearSpinner.setOnValueChangedListener(mOnYearChangedListener);
+        edtYear = getNumberEditText(mYearSpinner);
 
         mMonthSpinner = (NumberPicker) this.findViewById(R.id.np_month);
         mMonthSpinner.setMaxValue(12);
         mMonthSpinner.setMinValue(1);
-        mMonthSpinner.setValue(month+1);
         mMonthSpinner.setOnValueChangedListener(mOnMonthChangedListener);
+        edtMonth = getNumberEditText(mMonthSpinner);
+
 
         mDaySpinner = (NumberPicker) this.findViewById(R.id.np_day);
         mDaySpinner.setMaxValue(mCurrentDate.getActualMaximum(Calendar.DAY_OF_MONTH));
         mDaySpinner.setMinValue(1);
-        mDaySpinner.setValue(dayOfMonth);
         mDaySpinner.setOnValueChangedListener(mOnDayChangedListener);
+        edtDayOfMonth = getNumberEditText(mDaySpinner);
+        refreshNumPicker();
+
     }
 
     public YearDatePicker(Context context,AttributeSet attrs){
@@ -68,7 +68,19 @@ public class YearDatePicker extends FrameLayout {
         year = mCurrentDate.get(Calendar.YEAR);
         month = mCurrentDate.get(Calendar.MONTH);
         dayOfMonth = mCurrentDate.get(Calendar.DAY_OF_MONTH);
+        refreshNumPicker();
         updateDateControl();
+    }
+
+    private void refreshNumPicker(){
+        mYearSpinner.setValue(year);
+        mMonthSpinner.setValue(month+1);
+        mDaySpinner.setValue(dayOfMonth);
+    }
+
+    private EditText getNumberEditText(NumberPicker number){
+        EditText editText = (EditText) number.findViewById(getResources().getIdentifier("android:id/numberpicker_input", null, null));
+        return editText;
     }
 
     private NumberPicker.OnValueChangeListener mOnYearChangedListener = new NumberPicker.OnValueChangeListener() {
@@ -109,6 +121,31 @@ public class YearDatePicker extends FrameLayout {
         mDaySpinner.setMaxValue(maxDay);
     }
 
+    public int[] getDates(){
+        if(edtYear != null && edtYear.getText().toString() != null){
+            try {
+                year = Integer.parseInt(edtYear.getText().toString());
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+        if(edtMonth != null && edtMonth.getText().toString() != null){
+            try {
+                month = Integer.parseInt(edtMonth.getText().toString()) - 1;
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+        if(edtDayOfMonth != null && edtDayOfMonth.getText().toString() != null){
+            try {
+                dayOfMonth = Integer.parseInt(edtDayOfMonth.getText().toString());
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+        return new int[]{year,month,dayOfMonth};
+    }
+
     /**
      * The listener used to indicate the user has finished selecting a date.
      */
@@ -123,6 +160,7 @@ public class YearDatePicker extends FrameLayout {
          */
         void onDateSet(YearDatePicker view, int year, int month, int dayOfMonth);
     }
+
     /*
      *对外的公开方法
      */
