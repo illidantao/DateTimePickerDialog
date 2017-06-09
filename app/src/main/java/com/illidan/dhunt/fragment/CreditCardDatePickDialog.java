@@ -7,22 +7,25 @@ import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.illidan.dhunt.R;
 import com.illidan.dhunt.listener.OnDateListener;
 import com.illidan.dhunt.view.YearDatePicker;
+
 import java.util.Calendar;
 
-
 /**
- * @author illidantao
- * @date 2017/4/14 15:38
+ * Created by hzhuangdantao
+ * on 2017/6/9 11:04
+ * for what:
  */
-public class YearMonthDialog extends DialogFragment {
 
-    public static void show(FragmentActivity activity,OnDateListener mListener){
-        YearMonthDialog yearMonthDialog = new YearMonthDialog();
-        yearMonthDialog.mListener = mListener;
-        yearMonthDialog.show(activity.getSupportFragmentManager(), "pickDate");
+public class CreditCardDatePickDialog extends DialogFragment {
+
+    public static void show(FragmentActivity activity, OnDateListener mListener){
+        CreditCardDatePickDialog creditCardDatePickDialog = new CreditCardDatePickDialog();
+        creditCardDatePickDialog.mListener = mListener;
+        creditCardDatePickDialog.show(activity.getSupportFragmentManager(), "CreditCardDatePickDialog");
     }
 
     private OnDateListener mListener;
@@ -40,7 +43,7 @@ public class YearMonthDialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.frag_dialog_set_date,null);
+        View view = inflater.inflate(R.layout.frag_dialog_credit_date_pick,null);
         yearDatePicker = (YearDatePicker) view.findViewById(R.id.year_date_picker);
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(lastDate);

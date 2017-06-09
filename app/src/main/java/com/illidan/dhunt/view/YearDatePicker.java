@@ -1,6 +1,7 @@
 package com.illidan.dhunt.view;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -21,10 +22,13 @@ public class YearDatePicker extends FrameLayout {
     private Calendar mCurrentDate;
     private int year, month, dayOfMonth;
     private OnDateSetListener mOnYearDateChangedListener;
-
+    private int timeType = TimeType.ALLDATE;
 
     public YearDatePicker(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.year_date_picker);
+        timeType = ta.getInt(R.styleable.year_date_picker_select_type,TimeType.ALLDATE);
 
         mCurrentDate = Calendar.getInstance();
         mCurrentDate.setTimeInMillis(System.currentTimeMillis());
@@ -38,19 +42,27 @@ public class YearDatePicker extends FrameLayout {
         mYearSpinner.setMaxValue(3000);
         mYearSpinner.setOnValueChangedListener(mOnYearChangedListener);
         edtYear = getNumberEditText(mYearSpinner);
+        if((timeType & TimeType.YEAR) == 0){
+            mYearSpinner.setVisibility(GONE);
+        }
 
         mMonthSpinner = (NumberPicker) this.findViewById(R.id.np_month);
         mMonthSpinner.setMaxValue(12);
         mMonthSpinner.setMinValue(1);
         mMonthSpinner.setOnValueChangedListener(mOnMonthChangedListener);
         edtMonth = getNumberEditText(mMonthSpinner);
-
+        if((timeType & TimeType.MONTH) == 0){
+            mMonthSpinner.setVisibility(GONE);
+        }
 
         mDaySpinner = (NumberPicker) this.findViewById(R.id.np_day);
         mDaySpinner.setMaxValue(mCurrentDate.getActualMaximum(Calendar.DAY_OF_MONTH));
         mDaySpinner.setMinValue(1);
         mDaySpinner.setOnValueChangedListener(mOnDayChangedListener);
         edtDayOfMonth = getNumberEditText(mDaySpinner);
+        if((timeType & TimeType.DAY) == 0){
+            mDaySpinner.setVisibility(GONE);
+        }
         refreshNumPicker();
 
     }

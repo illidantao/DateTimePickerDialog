@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="year_date_picker">
+        <attr name="select_type">
+            <flag name="year" value="1"></flag>
+            <flag name="month" value="2"></flag>
+            <flag name="day" value="4"></flag>
+        </attr>
+    </declare-styleable>
+</resources>

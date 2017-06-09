@@ -22,8 +22,15 @@
         android:layout_height="wrap_content" />
 
     <Button
+        android:id="@+id/btn_year_mouth_day"
+        android:text="btn_year_mouth_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
         android:id="@+id/btn_year_mouth"
         android:text="btn_year_mouth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
 </LinearLayout>
